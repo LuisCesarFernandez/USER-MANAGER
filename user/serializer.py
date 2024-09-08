@@ -6,6 +6,13 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+    def create(self, validate_data):
+        password = validate_data.pop('password_hash')
+        user = User(**validate_data)
+        user.set_password(password)
+        user.save()
+        return user
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
